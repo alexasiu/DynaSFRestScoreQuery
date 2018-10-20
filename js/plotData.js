@@ -2,17 +2,76 @@
  * Functions to plot data and A and B locations
  *
  */
-
-var ABlocations = [];  // store user specified location svgs
-var ABradius = [];     // store radius svg
-
+var ABlocations = [];    // store user specified location svgs
+var ABradius = [];       // store radius svg
+var filteredBusinesses = []; // store all the plotted svg 
 var radiusValues = [30, 60];
+
+/*
+ * Plot only data within radius A and radius B
+ */
+function refreshData() {
+
+	// only refresh data if user has specified both A and B
+	if ( ABlocations.length != 2 ) return;
+
+	for ( i=0; i<filteredBusinesses.length; i++) {
+		filteredBusinesses[i].remove();
+	}
+
+	// get all the data
+	let coordsData = getCoordsData().then( 
+		function(data) {
+			data.forEach( 
+				function(businessCoord) {
+					let proj = getProjection();
+					let svg = getMapSvg();
+					// Data is [latitute, longitude] but 
+					// projection takes [longitude, latitute] thus index 1 and 0 
+					let projectedLocation = proj( [ businessCoord[1], businessCoord[0] ] );
+
+					// Check if the proj loc is inside radius A and radius B
+					if ( checkInsideA(projectedLocation) && checkInsideB(projectedLocation) ) {
+						let circle = svg.append('circle')
+						  .attr('cx', projectedLocation[0])
+						  .attr('cy', projectedLocation[1])
+						  .style("fill", "red")
+						  .attr('r', 3);
+						filteredBusinesses.push(circle);
+					}
+				}
+			); //foreach
+		} //function(data)
+	);//then
+
+}
+
+function checkInsideA(location) {
+	index = 0;
+	if (   ( location[0] < ( ABlocations[0].attr("cx") + radiusValues[index] ) )
+		&& ( location[0] > ( ABlocations[0].attr("cx") - radiusValues[index] ) ) 
+		&& ( location[1] < ( ABlocations[0].attr("cy") + radiusValues[index] ) )
+		&& ( location[1] > ( ABlocations[0].attr("cy") - radiusValues[index] ) ) ) {
+		return true;
+	}
+	return false;
+}
+
+function checkInsideB(location) {
+	index = 1;
+	if (   ( location[0] < ( ABlocations[0].attr("cx") + radiusValues[index] ) )
+		&& ( location[0] > ( ABlocations[0].attr("cx") - radiusValues[index] ) ) 
+		&& ( location[1] < ( ABlocations[0].attr("cy") + radiusValues[index] ) )
+		&& ( location[1] > ( ABlocations[0].attr("cy") - radiusValues[index] ) ) ) {
+		return true;
+	}
+	return false;
+}
 
 /*
  * Plot user specified location
  */
 function plotLocation(x, y) {
-
 	// Assume radius A first
 	var currRadius = radiusValues[0];
 
@@ -46,11 +105,10 @@ function plotLocation(x, y) {
 				  .attr('r', currRadius);
 	ABlocations.push(circle);
 	ABradius.push(radius);
-
 }
 
 /* 
- * Plots all business coordinates as circles
+ * Plots all business coordinates as red circles (used for initial debugging)
  */
 function plotAllCoordsData() {
 	let coordsData = getCoordsData().then( 

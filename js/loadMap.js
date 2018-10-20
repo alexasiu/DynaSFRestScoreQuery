@@ -44,7 +44,7 @@ function makeMap() {
 	// 				let circle = mapSvg.append('circle')
 	// 				  .attr('cx', projectedLocation[0])
 	// 				  .attr('cy', projectedLocation[1])
-	// 				  // .style("fill", "blue")
+	// 				  .style("fill", "blue")
 	// 				  .attr('r', 3);
 	// 			}
 	// 		); //foreach

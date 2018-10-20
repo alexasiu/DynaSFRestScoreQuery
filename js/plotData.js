@@ -1,5 +1,18 @@
 // Functions to plot data
 
+function plotALoc(x, y) {
+	let proj = getProjection();
+	let svg = getMapSvg();
+	let circle = svg.append('circle')
+	  .attr('cx', x)
+	  .attr('cy', y)
+	  .style("fill", "blue")
+	  .attr('r', 3);
+}
+
+function plotBLoc() {
+	
+}
 
 // Plots all business coordinates as circles
 function plotAllCoordsData() {
@@ -10,17 +23,18 @@ function plotAllCoordsData() {
 	// projection.invert([x, y]) returns [lon, lat]
 	let coordsData = getCoordsData().then( 
 		function(data) {
-			// console.log(data);
 			data.forEach( 
 				function(businessCoord) {
 					let proj = getProjection();
 					let svg = getMapSvg();
-					// var test = [37.78659, -122.429815]
-					let projectedLocation = proj( [ businessCoord[0], businessCoord[1] ] );
+					// Data is [latitute, longitude] but 
+					// projection takes [longitude, latitute] thus index 1 and 0 
+					let projectedLocation = proj( [ businessCoord[1], businessCoord[0] ] );
+					// console.log(projectedLocation);
 					let circle = svg.append('circle')
 					  .attr('cx', projectedLocation[0])
 					  .attr('cy', projectedLocation[1])
-					  .style("fill", "blue")
+					  .style("fill", "red")
 					  .attr('r', 3);
 				}
 			); //foreach

@@ -1,6 +1,12 @@
-// Functions relating to map setup and display
-var projection = null;
-var mapSvg = null;
+/*
+ * Functions relating to map setup and display
+ */
+var projection = null; //reference to projection function
+	// This is the mapping between <longitude, latitude> position to <x, y> pixel position on the map
+	// projection is a function and it has an inverse:
+	// projection([lon, lat]) returns [x, y]
+	// projection.invert([x, y]) returns [lon, lat]
+var mapSvg = null; // reference to the map svg
 
 function getMapSvg() {
 	return mapSvg;
@@ -32,24 +38,5 @@ function makeMap() {
 	  .attr('width', mapWidth)
 	  .attr('height', mapHeight)
 	  .attr('xlink:href', 'data/sf-map.svg');
-
-
-	// let coordsData = getCoordsData().then( 
-	// 	function(data) {
-	// 		// console.log(data);
-	// 		data.forEach( 
-	// 			function(businessCoord) {
-	// 				// var test = [37.78659, -122.429815]
-	// 				let projectedLocation = projection( [ businessCoord[0], businessCoord[1] ] );
-	// 				let circle = mapSvg.append('circle')
-	// 				  .attr('cx', projectedLocation[0])
-	// 				  .attr('cy', projectedLocation[1])
-	// 				  .style("fill", "blue")
-	// 				  .attr('r', 3);
-	// 			}
-	// 		); //foreach
-	// 	} //function(data)
-	// );//then
-
 
 }

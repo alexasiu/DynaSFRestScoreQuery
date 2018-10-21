@@ -101,6 +101,7 @@ function plotLocPoint(svg, locObj) {
 			  .attr('cx', locObj.pos[0])
 			  .attr('cy', locObj.pos[1])
 			  .style("fill", locObj.color)
+			  .attr("opacity", 0)
 			  .attr('r', locPointSize);
 	return locSvg;
 }

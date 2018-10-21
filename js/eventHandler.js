@@ -9,7 +9,6 @@ function locationClickListener() {
 	    var coords = d3.mouse(this);
 	    // console.log(coords);
 	    plotLocation( coords[0], coords[1] );
-	    refreshData();
 	})
 
 }

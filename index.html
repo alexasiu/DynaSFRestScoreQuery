@@ -4,14 +4,18 @@
     <meta charset="utf-8">
     <title>SF Restaurant Scores Dynamic Filter</title>
     <!-- <link rel="shortcut icon" href="img/icon.ico"> -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
     <script type="text/javascript" src="js/parseData.js"></script>
     <script type="text/javascript" src="js/loadMap.js"></script>
     <script type="text/javascript" src="js/plotData.js"></script>
     <script type="text/javascript" src="js/eventHandler.js"></script>
+    <script type="text/javascript" src="js/external/dat.min.gui.js"></script>
+    <script type="text/javascript" src="js/gui.js"></script>
 </head>
+
+<link href="css/external/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="css/external/dat-gui-light-theme.css"/>
 
 <body>
 
@@ -50,8 +54,8 @@ There are 2 rows:
 
 <script>
 	makeMap();
+	plotAllCoordsData();
 	locationClickListener();
-	// plotAllCoordsData();
 </script>
 
 </body>

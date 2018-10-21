@@ -1,6 +1,8 @@
 /*
  * Functions relating to map setup and display
  */
+
+// *** Variables *** //
 var projection = null; //reference to projection function
 	// This is the mapping between <longitude, latitude> position to <x, y> pixel position on the map
 	// projection is a function and it has an inverse:
@@ -8,6 +10,8 @@ var projection = null; //reference to projection function
 	// projection.invert([x, y]) returns [lon, lat]
 var mapSvg = null; // reference to the map svg
 
+
+// *** Functions *** //
 function getMapSvg() {
 	return mapSvg;
 }

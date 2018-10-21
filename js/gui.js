@@ -3,7 +3,7 @@
 var GUIText = function() {
   this.radius_A = getRadiusASize();
   this.radius_B = getRadiusBSize();
-  this.inspection_score = 100;
+  this.inspection_score = 50;
 };
 
 /*

@@ -3,15 +3,26 @@
 <head>
     <meta charset="utf-8">
     <title>SF Restaurant Scores Dynamic Filter</title>
+    
     <!-- <link rel="shortcut icon" href="img/icon.ico"> -->
     <link href="css/style.css" rel="stylesheet">
+
+    <!-- External scripts -->
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
-    <script type="text/javascript" src="js/parseData.js"></script>
-    <script type="text/javascript" src="js/loadMap.js"></script>
-    <script type="text/javascript" src="js/plotData.js"></script>
-    <script type="text/javascript" src="js/eventHandler.js"></script>
     <script type="text/javascript" src="js/external/dat.min.gui.js"></script>
+
+    <!-- Our scripts -->
+    <!-- for parsing the csv data -->
+    <script type="text/javascript" src="js/parseData.js"></script> 
+    <!-- for loading and rendering map svg -->
+    <script type="text/javascript" src="js/loadMap.js"></script>
+    <!-- for plotting data and any other location svgs -->
+    <script type="text/javascript" src="js/plotData.js"></script>
+    <!-- for handling any user events such as mouse clicks -->
+    <script type="text/javascript" src="js/eventHandler.js"></script>
+    <!-- for generating the UI controls -->
     <script type="text/javascript" src="js/gui.js"></script>
+
 </head>
 
 <link href="css/external/bootstrap.min.css" rel="stylesheet">
@@ -35,8 +46,11 @@
 <!-- end container -->
 
 <script>
+	// First make the map background
 	makeMap();
+	// Plot all the data
 	plotAllCoordsData();
+	// Listen for mouse clicks
 	locationClickListener();
 </script>
 

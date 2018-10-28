@@ -3,7 +3,9 @@
 var GUIText = function() {
   this.radius_A = getRadiusASize();
   this.radius_B = getRadiusBSize();
-  this.inspection_score = 50;
+  this.inspection_score = 0;
+  this.risk_cat = 'All';
+  this.clear_all = clearAll();
 };
 
 /*
@@ -14,26 +16,32 @@ window.onload = function() {
   var gui = new dat.GUI();
   var radius_A = gui.add(text, 'radius_A', 3, 300).name("Radius A");
   var radius_B = gui.add(text, 'radius_B', 3, 300).name("Radius B");
-  var inspection_score = gui.add(text, 'inspection_score', 0, 100).name("Inspection Score");
+  var inspection_score = gui.add(text, 'inspection_score', 0, 100).name("Above Inspection Score");
+  var risk_cat = gui.add(text, 'risk_cat', ['All', 'Low Risk', 'Moderate Risk', 'High Risk' ] ).name("Risk Category");
+  var clear_button = gui.add(text, 'clear_all').name("Clear");
 
-  radius_A.onChange( 
+  radius_A.onChange(
     function(value) {
       setRadiusASize(value);
     }
   );
 
-  radius_B.onChange( 
+  radius_B.onChange(
     function(value) {
       setRadiusBSize(value);
     }
-  ); 
+  );
 
   inspection_score.onChange(
     function(value) {
-      //Add filtering call
+      setInspectionScoreThreshold(value);
+    }
+  );
+
+  risk_cat.onChange(
+    function(value) {
+      filterRiskCategory(value);
     }
   );
 
 };
-  
-

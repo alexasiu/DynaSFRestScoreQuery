@@ -7,7 +7,6 @@ var rawData = null;
 var coordsData = null;
 var inspectionScoreData = null;
 
-
 // *** Functions *** //
 
 // Returns promise with entire dataset
@@ -43,7 +42,7 @@ function getAllData() {
 }
 
 // Returns promise with only latitude and longitude data
-function getCoordsData() {
+function getPointsData() {
 
 	if (coordsData == null) {
 
@@ -51,10 +50,17 @@ function getCoordsData() {
 		coordsData = getAllData().then(
 			function(value) {
 		   return Promise.all(value.map(function(results){
-		   return [results.business_latitude, results.business_longitude]; 
+		   return [
+				 results.business_latitude,
+				 results.business_longitude,
+				 results.inspection_score,
+				 results.risk_category,
+				 results.business_name,
+				 results.business_address,
+				 results.business_location
+			 ];
 	    }))});
 
-		// console.log(coordsData);
 	}
 
 	return coordsData;
@@ -68,20 +74,10 @@ function getInspectionScoreData() {
 		//this promise returns an array with lattitude and longitude
 		inspectionScoreData = getAllData().then(function(value) {
 		   return Promise.all(value.map(function(results){
-		   return [results.inspection_score]; 
-		    }))});
+				 return [results.inspection_score];
+		   }))});
 
-		console.log(scoreData);
 	}
 
 	return inspectionScoreData;
 }
-
-
-
-
-
-
-
-
-

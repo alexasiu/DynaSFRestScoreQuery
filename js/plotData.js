@@ -260,7 +260,11 @@ function getRadiusBSize() {
 	return locationB.radiusSize
 }
 
-function setRadiusASize(newRadius) {
+function setRadiusASize(newRadiusMiles) {
+	// A is in [x,y]
+	// add radius is in miles 
+	// convert radius miles to pixel length
+	var newRadius = pixelLength(newRadiusMiles); // radius in pixels
 	locationA.radiusSize = newRadius;
 	let svg = getMapSvg();
 	svg.select(".locationA").remove();
@@ -268,7 +272,11 @@ function setRadiusASize(newRadius) {
 	refreshData();
 }
 
-function setRadiusBSize(newRadius) {
+function setRadiusBSize(newRadiusMiles) {
+	// A is in [x,y]
+	// add radius is in miles 
+	// convert radius miles to pixel length
+	var newRadius = pixelLength(newRadiusMiles); // radius in pixels
 	locationB.radiusSize = newRadius;
 	let svg = getMapSvg();
 	svg.select(".locationB").remove();

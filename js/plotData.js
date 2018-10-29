@@ -17,7 +17,7 @@ var locationA = {    // store user defined location A
 	id: "locationA"
 }
 
-var locationB = {   // store user defined location A
+var locationB = {   // store user defined location B
 	pointSvg: null,
 	radiusSvg: null,
 	pos: null,
@@ -157,15 +157,14 @@ function plotLocationA(svg, locObj) {
 		refreshData();
 	}
 
-	let locSvg = svg
-				.append('circle')
-			  .attr('cx', locationA.pos[0])
-			  .attr('cy', locationA.pos[1])
-				.attr("class", "locationA")
-			  .style("fill", locationA.color)
-				.style("opacity", locRadiusOpacity)
-			  .attr('r', locationA.radiusSize)
-				.call(d3.drag().on("drag", on_circle_drag).on("end", ended));
+	let locSvg = svg.append('circle')
+					.attr('cx', locationA.pos[0])
+					.attr('cy', locationA.pos[1])
+					.attr("class", "locationA")
+					.style("fill", locationA.color)
+					.style("opacity", locRadiusOpacity)
+					.attr('r', locationA.radiusSize)
+					.call(d3.drag().on("drag", on_circle_drag).on("end", ended));
 	locationAExists = true
 	return locSvg;
 }
@@ -186,15 +185,14 @@ function plotLocationB(svg, locObj) {
 		refreshData();
 	}
 
-	let locSvg = svg
-				.append('circle')
-			  .attr('cx', locationB.pos[0])
-			  .attr('cy', locationB.pos[1])
-				.attr("class", "locationB")
-			  .style("fill", locationB.color)
-				.style("opacity", locRadiusOpacity)
-			  .attr('r', locationB.radiusSize)
-				.call(d3.drag().on("drag", on_circle_drag).on("end", ended));
+	let locSvg = svg.append('circle')
+					.attr('cx', locationB.pos[0])
+					.attr('cy', locationB.pos[1])
+					.attr("class", "locationB")
+					.style("fill", locationB.color)
+					.style("opacity", locRadiusOpacity)
+					.attr('r', locationB.radiusSize)
+					.call(d3.drag().on("drag", on_circle_drag).on("end", ended));
 	locationBExists = true
 	refreshData();
 	return locSvg;
@@ -217,13 +215,13 @@ function plotLocPoint(svg, locObj) {
 	}
 
 	let locSvg = svg.append('circle')
-			  .attr('cx', locObj.pos[0])
-			  .attr('cy', locObj.pos[1])
-				.attr("class", "locPoint")
-			  .style("fill", locObj.color)
-				.style("opacity", locRadiusOpacity)
-			  .attr('r', locObj.radiusSize)
-				.call(d3.drag().on("drag", on_circle_drag));
+					.attr('cx', locObj.pos[0])
+					.attr('cy', locObj.pos[1])
+					.attr("class", "locPoint")
+					.style("fill", locObj.color)
+					.style("opacity", locRadiusOpacity)
+					.attr('r', locObj.radiusSize)
+					.call(d3.drag().on("drag", on_circle_drag));
 	return locSvg;
 }
 
@@ -319,6 +317,10 @@ function clearAll() {
 	}
 }
 
+/*
+ * Filter to return only the latest inspection score 
+ * for the business
+ */
 function filterUniqueCoordsData(coordsData) {
 	var uniqueData = {"name": [1, 2, 3, 4]};
 	for (i = 0; i < coordsData.length; i++) {

@@ -32,7 +32,11 @@ var locationBExists = false;
 var inspectionScoreThreshold = 0;
 
 var shouldFilterRisk = false;
-var riskCategory = "All"
+var riskCategory = "All";
+
+var lastRefreshTime = new Date();
+
+var dragFlag = false;
 
 // *** Functions *** //
 
@@ -40,6 +44,9 @@ var riskCategory = "All"
  * Plot only data within radius A and radius B
  */
 function refreshData() {
+	let now = new Date();
+	if (now - lastRefreshTime < 100) { return };
+	lastRefreshTime = now;
 
 	// only refresh data if user has specified both A and B
 	if ( locationAExists == false || locationBExists == false ) return;
@@ -51,9 +58,6 @@ function refreshData() {
 
 	// go through all the points
 	svg.selectAll(".restaurant").remove();
-
-	console.log("called");
-
 	svg.selectAll(".restaurant")
 		.data(allDataSvg)
 		.enter()
@@ -82,20 +86,25 @@ function refreshData() {
 		.attr("cy",	function(d)	{	return d.y;	})
 		.attr("inspectionScore", function(d) { return d.inspectionScore; })
 		.on("mouseover", function(d) {
-			console.log("zcxv");
+			if(dragFlag) {return;}
       div.transition()
           .duration(20)
           .style("opacity", .9);
-      div .html(
-				"<p>Name: " + d.name
+      div.html(
+				"<p></p><p>Name: " + d.name
 				+ "</p><p>Address: "+d.address
 				+"</p><p>Risk: "+d.riskCategory
-				+"</p><p>Inspection Score: "+d.inspectionScore+"</p>"
+				+"</p><p>Inspection Score: "+d.inspectionScore+"</p><p></p>"
 			)
 	    .style("left", (d3.event.pageX) + "px")
 	    .style("top", (d3.event.pageY - 28) + "px");
     })
-    .on("mouseout", function(d) {
+    .on("mouseleave", function(d) {
+        div.transition()
+            .duration(500)
+            .style("opacity", 0);
+    })
+		.on("click", function(d) {
         div.transition()
             .duration(500)
             .style("opacity", 0);
@@ -135,7 +144,12 @@ function plotLocation(x, y) {
 function plotLocationA(svg, locObj) {
 	if (locObj.pos == null) return;
 
+	function ended() {
+		dragFlag = false;
+  }
+
 	function on_circle_drag(d) {
+		dragFlag = true;
 		d3.select(this)
 		.attr("cx",	d3.event.x)
 		.attr("cy",	d3.event.y);
@@ -151,7 +165,7 @@ function plotLocationA(svg, locObj) {
 			  .style("fill", locationA.color)
 				.style("opacity", locRadiusOpacity)
 			  .attr('r', locationA.radiusSize)
-				.call(d3.drag().on("drag", on_circle_drag));
+				.call(d3.drag().on("drag", on_circle_drag).on("end", ended));
 	locationAExists = true
 	return locSvg;
 }
@@ -159,7 +173,12 @@ function plotLocationA(svg, locObj) {
 function plotLocationB(svg, locObj) {
 	if (locObj.pos == null) return;
 
+	function ended() {
+		dragFlag = false;
+  }
+
 	function on_circle_drag(d) {
+		dragFlag = true;
 		d3.select(this)
 		.attr("cx",	d3.event.x)
 		.attr("cy",	d3.event.y);
@@ -175,7 +194,7 @@ function plotLocationB(svg, locObj) {
 			  .style("fill", locationB.color)
 				.style("opacity", locRadiusOpacity)
 			  .attr('r', locationB.radiusSize)
-				.call(d3.drag().on("drag", on_circle_drag));
+				.call(d3.drag().on("drag", on_circle_drag).on("end", ended));
 	locationBExists = true
 	refreshData();
 	return locSvg;
@@ -297,8 +316,24 @@ function clearAll() {
 		locationBExists = false;
 		plotAllData();
 
-		console.log("clear");
 	}
+}
+
+function filterUniqueCoordsData(coordsData) {
+	var uniqueData = {"name": [1, 2, 3, 4]};
+	for (i = 0; i < coordsData.length; i++) {
+		let d = coordsData[i];
+		if (Object.keys(uniqueData).includes(d[4])) {
+			let oldD = uniqueData[d[4]];
+			let newD = d;
+			if (oldD[7] < newD[7]) {
+				uniqueData[d[4]] = d;
+			}
+		} else {
+			uniqueData[d[4]] = d;
+		}
+	}
+	return Object.values(uniqueData);
 }
 
 /*
@@ -307,6 +342,8 @@ function clearAll() {
 function plotAllData() {
 	let coordsData = getPointsData().then(
 		function(data) {
+			let uniqueData = filterUniqueCoordsData(data);
+			data = uniqueData;
 			counter = 0;
 			data.forEach(
 				function(businessCoord) {
@@ -324,7 +361,6 @@ function plotAllData() {
 						address: businessCoord[5],
 						location: businessCoord[6]
 					};
-					console.log(businessCoord);
 					allDataSvg.push(dataObj);
 					counter += 1;
 					if (counter == data.length) {

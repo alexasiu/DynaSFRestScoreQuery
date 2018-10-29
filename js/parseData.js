@@ -36,10 +36,11 @@ function getAllData() {
 
 	}
 
-	// console.log(data);
 	return rawData;
 
 }
+
+
 
 // Returns promise with only latitude and longitude data
 function getPointsData() {
@@ -50,15 +51,16 @@ function getPointsData() {
 		coordsData = getAllData().then(
 			function(value) {
 		   return Promise.all(value.map(function(results){
-		   return [
-				 results.business_latitude,
-				 results.business_longitude,
-				 results.inspection_score,
-				 results.risk_category,
-				 results.business_name,
-				 results.business_address,
-				 results.business_location
-			 ];
+			   return [
+					 results.business_latitude,
+					 results.business_longitude,
+					 results.inspection_score,
+					 results.risk_category,
+					 results.business_name,
+					 results.business_address,
+					 results.business_location,
+					 new Date(results.inspection_date)
+				 ];
 	    }))});
 
 	}
